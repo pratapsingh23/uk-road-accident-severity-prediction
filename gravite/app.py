@@ -101,7 +101,8 @@ elif st.session_state.page == 'eda':
 elif st.session_state.page == 'predict':
     if st.button('<- Back'):
         go('home')
-    st.title("Predict: KSI vs Slight")
+    st.title("KSI vs Slight")
+    st.write("Predict accident severity by **Gravite**")
 
     with st.form('predict_form'):
         a, b = st.columns(2)
