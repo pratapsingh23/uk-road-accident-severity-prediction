@@ -185,9 +185,9 @@ elif st.session_state.page == 'predict':
 
         st.progress(proba, text=f"KSI (KIlled or Seriously Injured) probability: {proba * 100 :.1f}%")
         if pred == 1:
-            st.error(F"**KSI** (KIlled or Seriously Injured) - probability **{proba:.2f}**")
+            st.error(F"**KSI** (KIlled or Seriously Injured)")
         else:
-            st.success(f"**Slight** injuries - KSI probability **{proba:.2f}**")
+            st.success(f"**Slight** injuries")
         st.caption("Predictions may be inaccurate.", text_alignment='center')
 
 
