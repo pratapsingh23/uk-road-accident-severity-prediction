@@ -74,6 +74,7 @@ def go(page):
 
 # home
 if st.session_state.page == 'home':
+    st.write("")
     st.title("Where you wanna go?", text_alignment='center')
     st.write("")
 
