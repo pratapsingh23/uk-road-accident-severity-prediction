@@ -6,7 +6,7 @@ import urllib.request, os
 
 st.set_page_config(page_title="Accident Severity", layout="centered")
 
-# Model loading
+# Model loading------------------------------------------------------
 MODEL_URL = "https://github.com/pratapsingh23/uk-road-accident-severity-prediction/releases/download/v1.0/model_bundle.pkl"
 
 @st.cache_resource
@@ -20,8 +20,7 @@ bundle = load_bundle()
 model = bundle["model"]
 THRESHOLD = bundle["threshold"]
 
-# Label
-
+# Label------------------------------------------------------
 AREA = {
     'urban': 1.0, 'rural':2.0, 'unknown': np.nan
 }
@@ -64,7 +63,7 @@ DAY = {
     'thursday': 5.0, 'friday': 6.0, 'saturaday': 7.0
 }
 
-# Navigation
+# Navigation------------------------------------------------------
 if 'page' not in st.session_state:
     st.session_state.page = 'home'
 
@@ -72,7 +71,7 @@ def go(page):
     st.session_state.page = page
     st.rerun()
 
-# home
+# home------------------------------------------------------
 if st.session_state.page == 'home':
     st.write("")
     st.title("Where you wanna go?", text_alignment='center')
@@ -144,7 +143,7 @@ elif st.session_state.page == 'predict':
 
         submitted = st.form_submit_button("Predict", use_container_width=True)
 
-    # Prediction
+    # Prediction------------------------------------------------------
 
     if submitted:
         row = {
@@ -189,7 +188,7 @@ elif st.session_state.page == 'predict':
             st.error(F"**KSI** (KIlled or Seriously Injured)")
         else:
             st.success(f"**Slight** injuries")
-        st.caption("Predictions may be inaccurate.", text_alignment='center')
+        st.caption("Predictions may be inaccurate for now.", text_alignment='center')
 
 
 # model details-------------------------------------
