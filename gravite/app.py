@@ -81,7 +81,7 @@ if st.session_state.page == 'home':
         go("eda")
     st.write("")
 
-    if st.button("2. Predicy Severity", use_container_width=True):
+    if st.button("2. Predict Severity", use_container_width=True):
         go("predict")
     st.write("")
 
