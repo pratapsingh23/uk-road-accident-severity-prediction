@@ -1,0 +1,18 @@
+# data
+data/
+*.parquet
+*.csv
+
+# model (GitHub Releases par hai)
+*.pkl
+
+# python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# misc
+.ipynb_checkpoints/
+.vscode/
+.streamlit/secrets.toml
