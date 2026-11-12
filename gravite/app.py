@@ -75,6 +75,7 @@ def go(page):
 if st.session_state.page == 'home':
     st.write("")
     st.title("Where you wanna go?", text_alignment='center')
+    st.caption("UK Road Accident Severity Analysis & Prediction", text_alignment='center')
     st.write("")
 
     if st.button("1. EDA", use_container_width=True):
@@ -125,10 +126,10 @@ elif st.session_state.page == 'predict':
             has_bus = cc[1].checkbox("Bus")
             has_vul_veh = cc[0].checkbox("Vulnerable vehicle")
             has_vul_cas = cc[1].checkbox("Vulnerable casualty")
-            has_peds = cc[0].checkbox("Pedestrian movement")
+            has_turn = cc[1].checkbox("Turning")
             has_escoot = cc[1].checkbox("E-scooter casualty")
             has_overt = cc[0].checkbox("Overtaking")
-            has_turn = cc[1].checkbox("Turning")
+            has_peds = cc[0].checkbox("Pedestrian movement")
 
         with b:
             st.subheader("Conditions")
@@ -183,9 +184,9 @@ elif st.session_state.page == 'predict':
         proba = float(model.predict_proba(X_new)[0, 1])
         pred  =int(proba >= THRESHOLD)
 
-        st.progress(proba, text=f"KSI (KIlled or Seriously Injured) probability: {proba * 100 :.1f}%")
+        st.progress(proba, text=f"KSI (Killed or Seriously Injured) probability: {proba * 100 :.1f}%")
         if pred == 1:
-            st.error(F"**KSI** (KIlled or Seriously Injured)")
+            st.error(F"**KSI** (Killed or Seriously Injured)")
         else:
             st.success(f"**Slight** injuries")
         st.caption("Predictions may be inaccurate for now.", text_alignment='center')
