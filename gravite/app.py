@@ -75,7 +75,7 @@ def go(page):
 if st.session_state.page == 'home':
     st.write("")
     st.title("Where you wanna go?", text_alignment='center')
-    st.caption("UK Road Accident Severity Analysis & Prediction", text_alignment='center')
+    st.subheader("UK Road Accident Severity Analysis & Prediction", text_alignment='center')
     st.write("")
 
     if st.button("1. EDA", use_container_width=True):
@@ -126,10 +126,10 @@ elif st.session_state.page == 'predict':
             has_bus = cc[1].checkbox("Bus")
             has_vul_veh = cc[0].checkbox("Vulnerable vehicle")
             has_vul_cas = cc[1].checkbox("Vulnerable casualty")
-            has_turn = cc[1].checkbox("Turning")
+            has_turn = cc[0].checkbox("Turning")
             has_escoot = cc[1].checkbox("E-scooter casualty")
             has_overt = cc[0].checkbox("Overtaking")
-            has_peds = cc[0].checkbox("Pedestrian movement")
+            has_peds = cc[1].checkbox("Pedestrian movement")
 
         with b:
             st.subheader("Conditions")
