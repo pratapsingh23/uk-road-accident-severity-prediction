@@ -70,34 +70,11 @@ if 'page' not in st.session_state:
 def go(page):
     st.session_state.page = page
     st.rerun()
-
-# Fragmented title-----------------------------
-
-lines = [
-    "Where you wanna go?",
-    "Explore 500,000+ UK road collisions...",
-    "Predict accident severity with Gravite.",
-    "Uncover hidden patterns in road safety.",
-    "Analyze high-risk junctions & speed zones.",
-    "Evaluate vulnerable road user risks.",
-    "Compare urban vs rural crash dynamics.",
-    "Inspect Random Forest feature importance.",
-    "Test real-time weather & light conditions.",
-    "Turn raw collision data into life-saving insights."
-]
-if 'line_idx' not in st.session_state:
-    st.session_state.line_idx = 0
-@st.fragment(run_every=3)
-def rotating_title():
-    idx = st.session_state.line_idx
-    st.title(lines[idx], text_alignment='center')
-    st.session_state.line_idx = (idx + 1) % len(lines)
     
-
 # home------------------------------------------------------
 if st.session_state.page == 'home':
     st.write("")
-    rotating_title()
+    st.title("Where would you like to go?")
     st.subheader("UK Road Accident Severity Analysis & Prediction", text_alignment='center')
     st.write("")
 
