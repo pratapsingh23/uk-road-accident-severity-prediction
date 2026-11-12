@@ -74,7 +74,7 @@ def go(page):
 # home------------------------------------------------------
 if st.session_state.page == 'home':
     st.write("")
-    st.title("Where would you like to go?")
+    st.title("Where would you like to go?", text_alignment='center')
     st.subheader("UK Road Accident Severity Analysis & Prediction", text_alignment='center')
     st.write("")
 
