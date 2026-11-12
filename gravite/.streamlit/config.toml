@@ -3,8 +3,6 @@ primaryColor = "#4F8EF7"
 backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#F0F2F6"
 textColor = "#16213E"
-font = "Poppins:https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
-
-[server]
-port = 8501
-headless = false
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+headingFont = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap"
+codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
