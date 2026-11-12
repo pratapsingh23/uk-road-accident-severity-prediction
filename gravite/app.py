@@ -22,45 +22,45 @@ THRESHOLD = bundle["threshold"]
 
 # Label------------------------------------------------------
 AREA = {
-    'urban': 1.0, 'rural':2.0, 'unknown': np.nan
+    'Urban': 1.0, 'Rural':2.0, 'Unknown': np.nan
 }
 
 ROAD_TYPE = {
-    'single carriageway': 6.0, 'dual carriageway': 3.0, 'roundabout': 1.0,
-    'one way street': 2.0, 'slip road': 7.0, 'unknown': np.nan
+    'Single carriageway': 6.0, 'Dual carriageway': 3.0, 'Roundabout': 1.0,
+    'One way street': 2.0, 'Slip road': 7.0, 'Unknown': np.nan
 }
 
 LIGHT ={
-    'daylight': 1.0, 'darkness - light lit': 4.0, 'darkness - light unlit': 5.0, 
-    'darkness - no lighting': 6.0, 'darkness - lighting unknown': 7.0, 'unknown': np.nan
+    'Daylight': 1.0, 'Darkness - light lit': 4.0, 'Darkness - light unlit': 5.0, 
+    'Darkness - no lighting': 6.0, 'Darkness - lighting unknown': 7.0, 'Unknown': np.nan
 }
 
 WEATHER = {
-    'fine, no high winds': 1.0, 'raining + high winds': 5.0, 'snowing + high winds': 6.0,
-    'fog or mist': 7.0, 'other': 8.0, 'unknown': np.nan
+    'Fine, no high winds': 1.0, 'Raining + high winds': 5.0, 'Snowing + high winds': 6.0,
+    'Fog or mist': 7.0, 'Other': 8.0, 'Unknown': np.nan
 }
 
 SURFACE = {
-    'dry': 1.0, 'wet or dump': 2.0, 'snow':3.0, 'frost or ice': 4.0, 
-    'flood over 3cm': 5.0, 'unknown': np.nan
+    'Dry': 1.0, 'Wet or dump': 2.0, 'Snow':3.0, 'Frost or ice': 4.0, 
+    'Flood over 3cm': 5.0, 'Unknown': np.nan
 }
 
 JUNCTION = {
-    'not a junction': 0.0, 'T / staggered': 13.0, 'crossroads': 16.0,
-    '>4 arms (not roundabout)': 17.0, 'private drive': 18.0, 'other junction': 19.0,
-    'unknown': np.nan
+    'Not a junction': 0.0, 'T / staggered': 13.0, 'Crossroads': 16.0,
+    '>4 Arms (not roundabout)': 17.0, 'Private drive': 18.0, 'Other junction': 19.0,
+    'Unknown': np.nan
 }
 
 
 
 CONTROL ={
-    'give way / uncontrolled': 4.0, 'traffic signal': 2.0, 'stop sign': 3.0,
-    'authorised person': 1.0, 'unknown': np.nan 
+    'Give way / Uncontrolled': 4.0, 'Traffic signal': 2.0, 'Stop sign': 3.0,
+    'Authorised person': 1.0, 'Unknown': np.nan 
 }
 
 DAY = {
-    'sunday': 1.0, 'monday': 2.0, 'tuesday': 3.0, 'wednesday': 4.0, 
-    'thursday': 5.0, 'friday': 6.0, 'saturaday': 7.0
+    'Sunday': 1.0, 'Monday': 2.0, 'Tuesday': 3.0, 'Wednesday': 4.0, 
+    'Thursday': 5.0, 'Friday': 6.0, 'Saturaday': 7.0
 }
 
 # Navigation------------------------------------------------------
@@ -129,7 +129,7 @@ elif st.session_state.page == 'predict':
             has_turn = cc[0].checkbox("Turning")
             has_escoot = cc[1].checkbox("E-scooter casualty")
             has_overt = cc[0].checkbox("Overtaking")
-            has_peds = cc[1].checkbox("Pedestrian movement")
+            has_peds = cc[1].checkbox("Pedestrian")
 
         with b:
             st.subheader("Conditions")
