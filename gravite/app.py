@@ -90,7 +90,7 @@ if 'line_idx' not in st.session_state:
 @st.fragment(run_every=3)
 def rotating_title():
     idx = st.session_state.line_idx
-    st.title(linesp[idx], text_alignment='center')
+    st.title(lines[idx], text_alignment='center')
     st.session_state.line_idx = (idx + 1) % len(lines)
     
 
