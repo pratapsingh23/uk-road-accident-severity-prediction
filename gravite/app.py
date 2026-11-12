@@ -109,7 +109,7 @@ elif st.session_state.page == 'predict':
 
         with a:
             st.subheader("Numbers")
-            speed_limit = st.selectbox("Speed Limit (km/h)", [20, 30, 40, 50, 60, 70], index=2)
+            speed_limit = st.selectbox("Speed Limit (mph)", [20, 30, 40, 50, 60, 70], index=2)
             n_vehicles = st.number_input("Number of Vehicles", 1, 30, 1)
             min_age = st.number_input("Min driver age", 16, 100, 28)
             max_age = st.number_input("Max driver age", 16, 100, 32)
