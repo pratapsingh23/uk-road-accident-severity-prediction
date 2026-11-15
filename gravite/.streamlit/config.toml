@@ -1,3 +1,7 @@
+[server]
+enableStaticServing = true
+headless = true
+
 [theme]
 primaryColor = "#4F8EF7"
 backgroundColor = "#FFFFFF"
