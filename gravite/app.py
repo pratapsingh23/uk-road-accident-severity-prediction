@@ -3,6 +3,12 @@ import pandas as pd
 import numpy as np
 import joblib
 import urllib.request, os
+import streamlit.components.v1 as components
+
+ASSETS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
+
+def chart(name):
+    return os.path.join(ASSETS_DIR, name)
 
 st.set_page_config(page_title="Accident Severity", layout="centered")
 
@@ -94,8 +100,75 @@ if st.session_state.page == 'home':
 elif st.session_state.page == 'eda':
     if st.button('<- Back'):
         go('home')
-    st.title('EDA')
-    st.info("Coming Soon....")
+
+    st.title('EDA - UK Road Accidents')
+    st.caption("5,13,801 accidents records")
+
+    # KPI row---------
+    k1, k2, k3, k4  = st.columns(4)
+    k1.metric("Total accidents", "5,13,801")
+    k2.metric("Slight", "75.8%")
+    k3.metric("Serious", "22.7%")
+    k4.metric("Fatal", "1.5%")
+
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+        ["Severity", "Urban vs Rura;", "Time Patterns", "Pedestrain", "Deprivation", "KSI Hotspots"]
+    )
+
+    with tab1:
+        st.image(chart("distribution_severity.png"), use_container_width=True)
+        st.info(
+            "**Insights:** About 75 in 100 accidents cause only minor injuries -"
+            "but 22.7% are serious, i.e. **1 an 4** accidents is serious or fatal!"
+        )
+    with tab2:
+        st.image(chart("urban_vs_rural.png"), use_container_width=True)
+        st.warning(
+            "**Insights:** The rural fatal rate is **2.8%** - **3.5x higher**"
+            "than urban (0.8%)!"
+        )
+
+    with tab3:
+        st.image(chart("season_wise_acc.png"), use_container_width=True)
+        st.info(
+            "**Insight:** Severity stays **almost flat** across all seasons - "
+            "no single season is more dangerous."
+        )
+
+        st.image(chart("weekdays_acc.png"), use_container_width=True)
+        st.info(
+        "**Insight:** Weekday evening rush hours see significantly more accidents "
+        "(**59.6%**) compared to morning rush hours (**40.4%**)."
+)
+
+    with tab4:
+        st.image(chart("severity_pedestrian.png"), use_container_width=True)
+        st.warning(
+            "**Insight:** Pedestrian involved = **33.6% KSI** vs 22.8% without"
+            "(+10.8 points) - also the model's #1 feature!"
+        )
+
+    with tab5:
+        st.image(chart("severity_deprived.png"), use_container_width=True)
+        st.info(
+            "**Insight:** KSI share is nearly flat across deprivation bands "
+            "(23.0% -> 25.4%) - IMD shows no strong effect on severity."
+        )
+
+    with tab6:
+        st.markdown(
+            "**KSI rate by 1 km grid** - darker red = higher share of "
+            "killed/seriously-injured accidents (only grids with >= 50 accidents)."
+        )
+        try:
+            with open(chart("ksi_rate_map.html"), "r", encoding="utf-8") as f:
+                map_html = f.read()
+            components.html(map_html, height=800, scrolling=True)
+        except FileNotFoundError:
+            st.error("ksi_rate_map.html not found in assets/folder")
+
+    st.divider()
+    st.caption("Charts: eda.ipynb | Gravite")
 
 
 # predict------------------------------------
