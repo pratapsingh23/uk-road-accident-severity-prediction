@@ -102,14 +102,14 @@ elif st.session_state.page == 'eda':
         go('home')
 
     st.title('EDA - UK Road Accidents')
-    st.caption("5,13,801 accidents records")
+    st.caption("Visualizing key patterns, high-risk hours, and factors behind UK road accidents.")
 
     # KPI row---------
     k1, k2, k3, k4  = st.columns(4)
-    k1.metric("Total accidents", "5,13,801")
-    k2.metric("Slight", "75.8%")
-    k3.metric("Serious", "22.7%")
-    k4.metric("Fatal", "1.5%")
+    k1.metric("Total accidents", "**5,13,801**")
+    k2.metric("Slight", "**75.8%**")
+    k3.metric("Serious", "**22.7%**")
+    k4.metric("Fatal", "**1.5%**")
 
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
         ["Severity", "Urban vs Rural", "Time Patterns", "Pedestrain", "Deprivation", "KSI Hotspots"]
@@ -160,12 +160,10 @@ elif st.session_state.page == 'eda':
             "**KSI rate by 1 km grid** - darker red = higher share of "
             "killed/seriously-injured accidents (only grids with >= 50 accidents)."
         )
-        try:
-            with open(chart("ksi_rate_map.html"), "r", encoding="utf-8") as f:
-                map_html = f.read()
-            components.html(map_html, height=800, scrolling=True)
-        except FileNotFoundError:
-            st.error("ksi_rate_map.html not found in assets/folder")
+        st.image(chart('map_plot.png'), use_container_width=True)
+
+        # intractive version
+        st.markdown("**[Open intractive map in a new tab](app/static/ksi_rate_map.html)**")
 
     st.divider()
     st.caption("Charts: eda.ipynb | Gravite")
@@ -176,7 +174,7 @@ elif st.session_state.page == 'predict':
     if st.button('<- Back'):
         go('home')
     st.title("KSI vs Slight")
-    st.write("Predict accident severity by **Gravite**")
+    st.caption("Predict accident severity by **Gravite**")
 
     with st.form('predict_form'):
         a, b = st.columns(2)
@@ -275,10 +273,10 @@ if st.session_state.page == 'model_detail':
 
     # quick KPIs-----------------
     k1, k2, k3, k4  = st.columns(4)
-    k1.metric('KSI Recall', '0.74')
-    k2.metric('KSI F1', '0.464')
-    k3.metric('Threshold', '0.45')
-    k4.metric('Test size', '1,02,761')
+    k1.metric('KSI Recall', '**0.74**')
+    k2.metric('KSI F1', '**0.464**')
+    k3.metric('Threshold', '**0.45**')
+    k4.metric('Test size', '**1,02,761**')
 
     st.divider()
 
