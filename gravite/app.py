@@ -112,7 +112,7 @@ elif st.session_state.page == 'eda':
     k4.metric("Fatal", "1.5%")
 
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
-        ["Severity", "Urban vs Rura;", "Time Patterns", "Pedestrain", "Deprivation", "KSI Hotspots"]
+        ["Severity", "Urban vs Rural", "Time Patterns", "Pedestrain", "Deprivation", "KSI Hotspots"]
     )
 
     with tab1:
