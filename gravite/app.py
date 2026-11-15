@@ -160,7 +160,7 @@ elif st.session_state.page == 'eda':
                     "killed/seriously-injured accidents (grids with ≥50 accidents).")
 
         # Static preview 
-        st.image(chart("ksi_map.png"), use_container_width=True)
+        st.image(chart("map_plot.png"), use_container_width=True)
 
         # Interactive version — 
         st.markdown("🔍 **[Open interactive map in a new tab](app/static/ksi_map.html)**")
