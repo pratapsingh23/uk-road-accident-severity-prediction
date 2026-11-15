@@ -160,10 +160,16 @@ elif st.session_state.page == 'eda':
             "**KSI rate by 1 km grid** - darker red = higher share of "
             "killed/seriously-injured accidents (only grids with >= 50 accidents)."
         )
-        st.image(chart('map_plot.png'), use_container_width=True)
+        # st.image(chart("map_plot.png"), use_container_width=True)
 
-        # intractive version
-        st.markdown("**[Open intractive map in a new tab](app/static/ksi_rate_map.html)**")
+        # interactive version
+        map_path = chart("ksi_map.html")
+        if os.path.exists(map_path):
+            with open(map_path, "r", encoding="utf-8") as f:
+                map_html = f.read()
+            components.html(map_html, height=650, scrolling=True)
+        else:
+            st.warning("File not found")
 
     st.divider()
     st.caption("Charts: eda.ipynb | Gravite")
