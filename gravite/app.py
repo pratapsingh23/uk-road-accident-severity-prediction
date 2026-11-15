@@ -247,7 +247,7 @@ if st.session_state.page == 'model_detail':
 
     # tab 3: Pipeline * journey-----------------
     with tab3:
-        st.mardown("**Pipeline**")
+        st.markdown("**Pipeline**")
         st.code("""
 raw inputs (25 features)
    → ColumnTransformer
