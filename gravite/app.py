@@ -197,4 +197,76 @@ if st.session_state.page == 'model_detail':
     if st.button('<- Back'):
         go('home')
     st.title("ML Model details")
-    st.info("Coming Soon....")
+    st.caption("Gravite - How KSI predict by Random Forest")
+
+
+    # quick KPIs-----------------
+    k1, k2, k3, k4  = st.columns(4)
+    k1.metric('KSI Recall', '0.74')
+    k2.metric('KSI F1', '0.464')
+    k3.metric('Threshold', '0.45')
+    k4.metric('Test size', '1,02,761')
+
+    st.divider()
+
+    tab1, tab2, tab3 = st.tabs(['Specs', 'Feature Importance', 'Pipeline & Journey'])
+
+    # tab 1: space------------------------------------------
+    with tab1:
+        st.markdown("""
+        | Item | Value |
+        |---|---|
+        | Algorithm | **Random Forest Classifier** |
+        | Trees (`n_estimators`) | 100 |
+        | `max_depth` | 15 |
+        | `class_weight` | `balanced` |
+        | `random_state` | 42 |
+        | Features | 25 |
+        | Training rows | 4,11,040 (80%) |
+        | Test rows | 1,02,761 (20%, stratified) |
+        | Dataset | 5,13,801 UK road accident records |
+        | Target | **KSI** (fatal + serious) vs **Slight** |
+        """)
+
+    # tab 2: Feature Importance--------------------
+    with tab2:
+        importance = pd.Series({
+            'has_vulnerable': 0.094,
+            'number_of_vehicles': 0.081,
+            'max_driver_age': 0.078,
+            'speed_limit': 0.064,
+            'min_driver_age': 0.059,
+            'max_engine_cc': 0.058,
+            'avg_casualty_imd': 0.041,
+            'male_driver_share': 0.041,
+            'has_vulnerable_vehicle': 0.039,
+            'has_motorcycle': 0.034,
+        }).sort_values()
+        st.bar_chart(importance, height=400)
+        st.caption("Top 10 feature - RF impurity-based importance. Vulnerable road users + speed + driver age dominate")
+
+    # tab 3: Pipeline * journey-----------------
+    with tab3:
+        st.mardown("**Pipeline**")
+        st.code("""
+raw inputs (25 features)
+   → ColumnTransformer
+       ├─ numeric  : passthrough (NaN kept as-is)
+       ├─ categorical : OneHotEncoder (raw codes, NaN = own category)
+       └─ binary flags : passthrough
+   → RandomForest (100 trees, depth 15, balanced)
+   → P(KSI) ≥ 0.45 ?  KSI 🚨 : Slight ✅
+        """, language=None)
+
+        st.markdown("**Training journey (why each step mattered):**")
+        st.markdown("""
+        - **Baseline RF** -> KSI recall **0.15** -model almost guessed "slight"
+        - **`class_weight='balanced'`** -> recall **0.62** (4.2x more serious cases caught)
+        - **Threshold sweep (0.45)** -> recall **0.74**, F1 **0.464**
+        - **Accuracy trap:** 65% looks low, but 76% of data is "slight" - a model guessing *always slight* scores 75.8%! Accuracy was deprioritized for **recall/F1 on KSI**
+        - **NaN stratagy:** no imputation - RF handles missing values natively (junction_control was 44.6% missing!)
+
+        """)
+
+        with st.expander("Why threshold 0.45?"):
+            st.write("Precision-recall sweep on test set: 0.45 maximized KSI F1 (0.464) while pushing recall to 0.74 - safety-first traadeoff: false alarm < missed serious accident.")
