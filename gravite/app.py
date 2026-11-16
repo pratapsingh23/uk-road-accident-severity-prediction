@@ -177,7 +177,7 @@ elif st.session_state.page == 'eda':
                 color_continuous_scale="Y10rRd",
                 hover_data={
                     'lat_g':False, 'long_g':False, 'total':True,
-                    'ksi_rate_mapped':':.1f', 'urban_share':':.0f',
+                    'ksi_rate_capped':':.1f', 'urban_share':':.0f',
                     'avg_speed_limit':':.0f'
                 },
                 zoom=5, center={'lat':55.3781, 'lon':-3.4360},
