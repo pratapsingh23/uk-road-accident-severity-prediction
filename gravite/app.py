@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import plotly.express as px
 import joblib
 import urllib.request, os
 import streamlit.components.v1 as components
@@ -11,6 +12,15 @@ def chart(name):
     return os.path.join(ASSETS_DIR, name)
 
 st.set_page_config(page_title="Accident Severity", layout="centered")
+
+# Map loading------------------------------------------------------
+GRID_URL = "https://github.com/pratapsingh23/uk-road-accident-severity-prediction/releases/download/v1.0/hot_grid.csv"
+
+@st.cache_data
+def load_grid():
+    if not os.path.exists("hot_grid.csv"):
+        urllib.request.urlretrieve(GRID_URL, "hot_grid.csv")
+    return pd.read_csv("hot_grid.csv")
 
 # Model loading------------------------------------------------------
 MODEL_URL = "https://github.com/pratapsingh23/uk-road-accident-severity-prediction/releases/download/v1.0/model_bundle.pkl"
@@ -159,11 +169,26 @@ elif st.session_state.page == 'eda':
         st.markdown("**KSI rate by 1 km grid** — darker red = higher share of "
                     "killed/seriously-injured accidents (grids with ≥50 accidents).")
 
-        # Static preview 
-        st.image(chart("map_plot.png"), use_container_width=True)
+        try:
+            hot = load_grid()
+            fig = px.scatter_map(
+                hot, lat='lat_g', long='long_g',
+                color='ksi_rate_capped', size='total', size_max=18,
+                color_continuous_scale="Y10rRd",
+                hover_data={
+                    'lat_g':False, 'long_g':False, 'total':True,
+                    'ksi_rate_mapped':':.1f', 'urban_share':':.0f',
+                    'avg_speed_limit':':.0f'
+                },
+                zoom=5, center={'lat':55.3781, 'lon':-3.4360},
+                map_style='carto-positron', height=600,
 
-        # Interactive version — 
-        st.markdown("🔍 **[Open interactive map in a new tab](app/static/ksi_map.html)**")
+            )
+            fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
+            st.plotly_chart(fig, use_container_width=True)
+        except Exception as e:
+            st.error(f"Map is not loaded! {e}")
+            st.image(chart("map_plot.png"), use_container_width=True)
 
     st.divider()
     st.caption("Charts: eda.ipynb | Gravite")
