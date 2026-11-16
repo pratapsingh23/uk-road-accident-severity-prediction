@@ -117,7 +117,7 @@ The deployed artifact is a single bundle — pipeline + threshold together:
 | **EDA** | Six-tab chart gallery + the interactive **1 km-grid KSI hotspot map** |
 | **Model detail** | How the forest works, the threshold trade-off, metrics, and feature design |
 
-> ⚠️ *Model predictions may be inaccurate. Educational project — not for operational use.*
+> ⚠️ *Model predictions may be inaccurate for now. *
 
 ---
 
