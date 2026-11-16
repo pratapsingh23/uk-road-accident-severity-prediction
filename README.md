@@ -9,7 +9,7 @@
 
 > **Live link → [uk-road-accident-severity-prediction-kvagwdjbzfetxjurws6bcz.streamlit.app](https://uk-road-accident-severity-prediction-kvagwdjbzfetxjurws6bcz.streamlit.app)**
 
-**Gravite** (from French *gravité* — gravity — and Latin *gravitas*, the weight of things) is a machine-learning web app that predicts whether a road accident is likely to be **KSI — Killed or Seriously Injured** — using only the conditions known *before* the crash happens.
+**Gravite** (from French *gravité* — severity — and Latin *gravitas*, the weight of things) is a machine-learning web app that predicts whether a road accident is likely to be **KSI — Killed or Seriously Injured** — using only the conditions known *before* the crash happens.
 
 ---
 
@@ -62,9 +62,11 @@ Key findings from the EDA notebook:
 |---|---|
 | ![Severity](gravite/assets/distribution_severity.png) | ![Urban vs rural](gravite/assets/urban_vs_rural.png) |
 
-| Season pattern | Rush hours |
-|---|---|
-| ![Seasons](gravite/assets/season_wise_acc.png) | ![Rush hours](gravite/assets/weekdays_acc.png) |
+### Season pattern
+![Seasons](gravite/assets/season_wise_acc.png)
+
+### Rush hours
+![Rush hours](gravite/assets/weekdays_acc.png)
 
 | Pedestrian involvement | IMD deprivation |
 |---|---|
