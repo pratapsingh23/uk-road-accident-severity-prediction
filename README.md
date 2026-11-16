@@ -58,15 +58,15 @@ Key findings from the EDA notebook:
 
 | Severity distribution | Urban vs rural |
 |---|---|
-| ![Severity](gravite/assets/severity_distribution.png) | ![Urban vs rural](gravite/assets/urban_vs_rural.png) |
+| ![Severity](gravite/assets/distribution_severity.png) | ![Urban vs rural](gravite/assets/urban_vs_rural.png) |
 
 | Season pattern | Rush hours |
 |---|---|
-| ![Seasons](gravite/assets/season_pattern.png) | ![Rush hours](gravite/assets/rush_hour.png) |
+| ![Seasons](gravite/assets/season_wise_acc.png) | ![Rush hours](gravite/assets/weekdays_acc.png) |
 
 | Pedestrian involvement | IMD deprivation |
 |---|---|
-| ![Pedestrian](gravite/assets/pedestrian_severity.png) | ![IMD](gravite/assets/imd_deprivation.png) |
+| ![Pedestrian](gravite/assets/severity_pedestrian.png) | ![IMD](gravite/assets/severity_deprived.png) |
 
 </details>
 
