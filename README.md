@@ -157,35 +157,8 @@ pip install -r requirements.txt
 streamlit run gravite/app.py
 ```
 
-Open **http://localhost:8501** — done. ✅
-
----
-
-## 📁 Project structure
-
-```
-uk-road-accident-severity-prediction/
-├── README.md
-├── requirements.txt
-├── notebooks/
-│   ├── data_exploration&_cleaning.ipynb   # cleaning, merging, label maps
-│   └── eda.ipynb                          # EDA + charts + hotspot map
-├── gravite/
-│   ├── app.py                             # the Streamlit app
-│   ├── assets/                            # EDA chart PNGs + map image
-│   └── static/                            # interactive map HTML (served via static serving)
-└── .streamlit/
-    └── config.toml                        # theme / font
-```
-
-*Model artifact lives in [Releases](https://github.com/YOUR_USERNAME/uk-road-accident-severity-prediction/releases), not the repo (`model_bundle.pkl`).*
-
----
-
 ## 📜 License & disclaimer
 
 Educational project. Data: publicly available UK road-accident records; map © OpenStreetMap contributors © CARTO. Predictions are illustrative — **"Model predictions may be inaccurate."**
 
----
 
-*Gravite — because every road carries weight.*
