@@ -105,7 +105,7 @@ The deployed artifact is a single bundle — pipeline + threshold together:
 {"model": pipe2, "threshold": 0.45}
 ```
 
-📦 Download **`model_bundle.pkl`** from the [Releases](https://github.com/YOUR_USERNAME/uk-road-accident-severity-prediction/releases) page (v1.0). The app **downloads it automatically on first run** if it's missing. `scikit-learn` is pinned to **1.6.1** — the version the model was trained with.
+📦 Download **`model_bundle.pkl`** from the [Releases](https://github.com/pratapsingh23/uk-road-accident-severity-prediction/releases) page (v1.0). The app **downloads it automatically on first run** if it's missing. `scikit-learn` is pinned to **1.6.1** — the version the model was trained with.
 
 ---
 
@@ -145,7 +145,7 @@ requirements.txt
 
 ```bash
 # 1. Clone
-git clone https://github.com/YOUR_USERNAME/uk-road-accident-severity-prediction.git
+git clone https://github.com/pratapsingh23/uk-road-accident-severity-prediction.git
 cd uk-road-accident-severity-prediction
 
 # 2. Virtual environment
