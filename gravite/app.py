@@ -172,7 +172,7 @@ elif st.session_state.page == 'eda':
         try:
             hot = load_grid()
             fig = px.scatter_map(
-                hot, lat='lat_g', long='long_g',
+                hot, lat='lat_g', lon='long_g',
                 color='ksi_rate_capped', size='total', size_max=18,
                 color_continuous_scale="Y10rRd",
                 hover_data={
