@@ -174,7 +174,7 @@ elif st.session_state.page == 'eda':
             fig = px.scatter_map(
                 hot, lat='lat_g', lon='long_g',
                 color='ksi_rate_capped', size='total', size_max=18,
-                color_continuous_scale="Y10rRd",
+                color_continuous_scale="YlOrRd",
                 hover_data={
                     'lat_g':False, 'long_g':False, 'total':True,
                     'ksi_rate_capped':':.1f', 'urban_share':':.0f',
