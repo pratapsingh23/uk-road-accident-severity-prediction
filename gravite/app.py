@@ -57,7 +57,7 @@ WEATHER = {
 }
 
 SURFACE = {
-    'Dry': 1.0, 'Wet or dump': 2.0, 'Snow':3.0, 'Frost or ice': 4.0, 
+    'Dry': 1.0, 'Wet or damp': 2.0, 'Snow':3.0, 'Frost or ice': 4.0, 
     'Flood over 3cm': 5.0, 'Unknown': np.nan
 }
 
@@ -76,7 +76,7 @@ CONTROL ={
 
 DAY = {
     'Sunday': 1.0, 'Monday': 2.0, 'Tuesday': 3.0, 'Wednesday': 4.0, 
-    'Thursday': 5.0, 'Friday': 6.0, 'Saturaday': 7.0
+    'Thursday': 5.0, 'Friday': 6.0, 'Saturday': 7.0
 }
 
 # Navigation------------------------------------------------------
@@ -122,14 +122,14 @@ elif st.session_state.page == 'eda':
     k4.metric("Fatal", "**1.5%**")
 
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
-        ["Severity", "Urban vs Rural", "Time Patterns", "Pedestrain", "Deprivation", "KSI Hotspots"]
+        ["Severity", "Urban vs Rural", "Time Patterns", "Pedestrian", "Deprivation", "KSI Hotspots"]
     )
 
     with tab1:
         st.image(chart("distribution_severity.png"), use_container_width=True)
         st.info(
             "**Insights:** About 75 in 100 accidents cause only minor injuries -"
-            "but 22.7% are serious, i.e. **1 an 4** accidents is serious or fatal!"
+            "but 22.7% are serious, i.e. **1 in 4** accidents is serious or fatal!"
         )
     with tab2:
         st.image(chart("urban_vs_rural.png"), use_container_width=True)
@@ -155,7 +155,7 @@ elif st.session_state.page == 'eda':
         st.image(chart("severity_pedestrian.png"), use_container_width=True)
         st.warning(
             "**Insight:** Pedestrian involved = **33.6% KSI** vs 22.8% without"
-            "(+10.8 points) - also the model's #1 feature!"
+            
         )
 
     with tab5:
@@ -360,9 +360,9 @@ raw inputs (25 features)
         - **`class_weight='balanced'`** -> recall **0.62** (4.2x more serious cases caught)
         - **Threshold sweep (0.45)** -> recall **0.74**, F1 **0.464**
         - **Accuracy trap:** 65% looks low, but 76% of data is "slight" - a model guessing *always slight* scores 75.8%! Accuracy was deprioritized for **recall/F1 on KSI**
-        - **NaN stratagy:** no imputation - RF handles missing values natively (junction_control was 44.6% missing!)
+        - **NaN strategy:** no imputation - RF handles missing values natively (junction_control was 44.6% missing!)
 
         """)
 
         with st.expander("Why threshold 0.45?"):
-            st.write("Precision-recall sweep on test set: 0.45 maximized KSI F1 (0.464) while pushing recall to 0.74 - safety-first traadeoff: false alarm < missed serious accident.")
+            st.write("Precision-recall sweep on test set: 0.45 maximized KSI F1 (0.464) while pushing recall to 0.74 - safety-first tradeoff: false alarm < missed serious accident.")
