@@ -1,11 +1,11 @@
-# 🚦 Gravite — UK Road Accident Severity Prediction
+# Gravite — UK Road Accident Severity Prediction
 
 [![Streamlit App](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://uk-road-accident-severity-prediction-kvagwdjbzfetxjurws6bcz.streamlit.app)
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.6.1-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![Plotly](https://img.shields.io/badge/Plotly-EDA-3F4F8A?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com/)
 
-> **Live demo → [uk-road-accident-severity-prediction-kvagwdjbzfetxjurws6bcz.streamlit.app](https://uk-road-accident-severity-prediction-kvagwdjbzfetxjurws6bcz.streamlit.app)**
+> **Live link → [uk-road-accident-severity-prediction-kvagwdjbzfetxjurws6bcz.streamlit.app](https://uk-road-accident-severity-prediction-kvagwdjbzfetxjurws6bcz.streamlit.app)**
 
 **Gravite** (from French *gravité* — gravity — and Latin *gravitas*, the weight of things) is a machine-learning web app that predicts whether a road accident is likely to be **KSI — Killed or Seriously Injured** — using only the conditions known *before* the crash happens.
 
