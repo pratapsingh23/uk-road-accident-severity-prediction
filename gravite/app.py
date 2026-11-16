@@ -11,7 +11,7 @@ ASSETS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 def chart(name):
     return os.path.join(ASSETS_DIR, name)
 
-st.set_page_config(page_title="Accident Severity", layout="centered")
+st.set_page_config(page_title="Gravite", layout="centered")
 
 # Map loading------------------------------------------------------
 GRID_URL = "https://github.com/pratapsingh23/uk-road-accident-severity-prediction/releases/download/v1.0/hot_grid.csv"
