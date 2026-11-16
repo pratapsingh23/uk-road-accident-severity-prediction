@@ -4,7 +4,7 @@ import numpy as np
 import plotly.express as px
 import joblib
 import urllib.request, os
-import streamlit.components.v1 as components
+
 
 ASSETS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 
