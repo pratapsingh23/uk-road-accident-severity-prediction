@@ -9,7 +9,8 @@
 
 > **Live link → [uk-road-accident-severity-prediction-kvagwdjbzfetxjurws6bcz.streamlit.app](https://uk-road-accident-severity-prediction-kvagwdjbzfetxjurws6bcz.streamlit.app)**
 
-Gravite (from the French gravité, meaning severity) is a Random Forest machine learning model that predicts whether a road accident is likely to result in KSI (Killed or Seriously Injured) using only pre-crash conditions. The model is served through a Streamlit dashboard.
+**Gravite** (from the French *gravité*, meaning severity) is a Random Forest machine learning model that predicts whether a road accident is likely to result in KSI (Killed or Seriously Injured) using only pre-crash conditions. The model is served through a Streamlit dashboard.
+
 ----
 ## 📌 Overview
 
