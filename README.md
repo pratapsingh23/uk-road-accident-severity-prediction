@@ -9,8 +9,7 @@
 
 > **Live link → [uk-road-accident-severity-prediction-kvagwdjbzfetxjurws6bcz.streamlit.app](https://uk-road-accident-severity-prediction-kvagwdjbzfetxjurws6bcz.streamlit.app)**
 
-**Gravite** (from French *gravité* — severity — and Latin *gravitas*, the weight of things) is a machine-learning web app that predicts whether a road accident is likely to be **KSI — Killed or Seriously Injured** — using only the conditions known *before* the crash happens.
-
+**Gravite** (from French *gravité* — severity — and Latin *gravitas*, the weight of things) is the name of my machine-learning model, which predicts whether a road accident is likely to be **KSI — Killed or Seriously Injured** — using only the conditions known *before* the crash happens. The model is served through a **Streamlit dashboard**.
 ---
 
 ## 📌 Overview
