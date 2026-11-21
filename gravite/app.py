@@ -6,21 +6,39 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+# ------------------------------------------------------------------
+# Page Config & Paths
+# ------------------------------------------------------------------
+st.set_page_config(
+    page_title="UK Road Accident Severity Dashboard",
+    page_icon="🚦",
+    layout="wide",
+)
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.join(BASE_DIR, "assets")
+GRID_PATH = os.path.join(BASE_DIR, "hot_grid.csv")
+MODEL_PATH = os.path.join(BASE_DIR, "model_bundle.pkl")
+
+GRID_URL = "https://github.com/pratapsingh23/uk-road-accident-severity-prediction/releases/download/v1.0/hot_grid.csv"
+MODEL_URL = "https://github.com/pratapsingh23/uk-road-accident-severity-prediction/releases/download/v1.0/model_bundle.pkl"
 
 
 def chart(name):
     return os.path.join(ASSETS_DIR, name)
 
 
-st.set_page_config(page_title="Gravite", page_icon="🚦", layout="centered")
+def show_chart(filename):
+    path = chart(filename)
+    if os.path.exists(path):
+        st.image(path, use_container_width=True)
+    else:
+        st.warning(f"Chart not found: {filename}")
 
-# Map loading ------------------------------------------------------
-GRID_URL = "https://github.com/pratapsingh23/uk-road-accident-severity-prediction/releases/download/v1.0/hot_grid.csv"
-GRID_PATH = os.path.join(BASE_DIR, "hot_grid.csv")
 
-
+# ------------------------------------------------------------------
+# Data & Model Loading
+# ------------------------------------------------------------------
 @st.cache_data
 def load_grid():
     if not os.path.exists(GRID_PATH):
@@ -28,15 +46,10 @@ def load_grid():
     return pd.read_csv(GRID_PATH)
 
 
-# Model loading ----------------------------------------------------
-MODEL_URL = "https://github.com/pratapsingh23/uk-road-accident-severity-prediction/releases/download/v1.0/model_bundle.pkl"
-MODEL_PATH = os.path.join(BASE_DIR, "model_bundle.pkl")
-
-
 @st.cache_resource
 def load_bundle():
     if not os.path.exists(MODEL_PATH):
-        with st.spinner("Downloading model..."):
+        with st.spinner("Downloading Gravite model..."):
             urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
     return joblib.load(MODEL_PATH)
 
@@ -45,7 +58,9 @@ bundle = load_bundle()
 model = bundle["model"]
 THRESHOLD = float(bundle["threshold"])
 
-# Labels -----------------------------------------------------------
+# ------------------------------------------------------------------
+# Label Encodings
+# ------------------------------------------------------------------
 AREA = {"Urban": 1.0, "Rural": 2.0, "Unknown": np.nan}
 
 ROAD_TYPE = {
@@ -112,92 +127,106 @@ DAY = {
     "Saturday": 7.0,
 }
 
-# Navigation -------------------------------------------------------
-if "page" not in st.session_state:
-    st.session_state.page = "home"
-
-
-def go(page):
-    st.session_state.page = page
-    st.rerun()
-
-
-# Home -------------------------------------------------------------
-if st.session_state.page == "home":
-    st.write("")
-    st.title("🚦 Gravite")
-    st.subheader("UK Road Accident Severity Analysis & Prediction")
-    st.caption("Where would you like to go?")
+# ------------------------------------------------------------------
+# Sidebar (Dashboard Info)
+# ------------------------------------------------------------------
+with st.sidebar:
+    st.header("🚦 Accident Dashboard")
+    st.caption("UK Road Accident Severity Analysis & Prediction")
     st.divider()
 
-    if st.button("1. 📊 EDA (Exploratory Analysis)", use_container_width=True):
-        go("eda")
-    if st.button("2. 🎯 Predict Severity", use_container_width=True, type="primary"):
-        go("predict")
-    if st.button("3. 🧠 Model Details", use_container_width=True):
-        go("model_detail")
+    st.subheader("Dataset Summary")
+    st.write("- **Records:** 5,13,801")
+    st.write("- **Target:** KSI vs Slight")
+    st.write("- **Features:** 25")
 
-# EDA --------------------------------------------------------------
-elif st.session_state.page == "eda":
-    if st.button("← Back"):
-        go("home")
+    st.divider()
 
-    st.title("EDA - UK Road Accidents")
-    st.caption("Visualizing key patterns, high-risk hours, and factors behind UK road accidents.")
+    st.subheader("Model: Gravite")
+    st.write("- **Algorithm:** Random Forest")
+    st.write(f"- **Threshold:** `{THRESHOLD:.2f}`")
+    st.write("- **KSI Recall:** `0.74`")
+    st.write("- **KSI F1:** `0.464`")
 
-    k1, k2, k3, k4 = st.columns(4)
-    k1.metric("Total accidents", "5,13,801")
-    k2.metric("Slight", "75.8%")
-    k3.metric("Serious", "22.7%")
-    k4.metric("Fatal", "1.5%")
+# ------------------------------------------------------------------
+# Dashboard Header & Top KPIs
+# ------------------------------------------------------------------
+st.title("🚦 UK Road Accident Severity Dashboard")
+st.caption("Exploratory analysis of 5,13,801 UK accidents and KSI prediction powered by the Gravite model.")
 
+k1, k2, k3, k4 = st.columns(4)
+with k1:
+    with st.container(border=True):
+        st.metric("Total Accidents", "5,13,801")
+with k2:
+    with st.container(border=True):
+        st.metric("Slight Injuries", "75.8%")
+with k3:
+    with st.container(border=True):
+        st.metric("Serious Injuries", "22.7%")
+with k4:
+    with st.container(border=True):
+        st.metric("Fatal Accidents", "1.5%")
+
+st.write("")
+
+# ------------------------------------------------------------------
+# Main Dashboard Tabs
+# ------------------------------------------------------------------
+main_eda, main_predict, main_model = st.tabs(
+    ["📊 EDA & Hotspots", "🎯 Predict Severity (Gravite)", "🧠 Gravite Model Details"]
+)
+
+# ==================================================================
+# TAB 1: EDA & HOTSPOTS
+# ==================================================================
+with main_eda:
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
         ["Severity", "Urban vs Rural", "Time Patterns", "Pedestrian", "Deprivation", "KSI Hotspots"]
     )
 
     with tab1:
-        st.image(chart("distribution_severity.png"), use_container_width=True)
+        show_chart("distribution_severity.png")
         st.info(
-            "Insights: About 75 in 100 accidents cause only minor injuries — "
-            "but 22.7% are serious, i.e. 1 in 4 accidents is serious or fatal!"
+            "About 75 in 100 accidents cause only minor injuries — "
+            "but 22.7% are serious (nearly 1 in 4 accidents is serious or fatal)."
         )
 
     with tab2:
-        st.image(chart("urban_vs_rural.png"), use_container_width=True)
-        st.warning(
-            "Insights: The rural fatal rate is 2.8% — 3.5x higher than urban (0.8%)!"
-        )
+        show_chart("urban_vs_rural.png")
+        st.warning("The rural fatal rate is 2.8% — 3.5x higher than urban (0.8%).")
 
     with tab3:
-        st.image(chart("season_wise_acc.png"), use_container_width=True)
-        st.info(
-            "Insight: Severity stays almost flat across all seasons — "
-            "no single season is more dangerous."
-        )
-
-        st.image(chart("weekdays_acc.png"), use_container_width=True)
-        st.info(
-            "Insight: Weekday evening rush hours see significantly more accidents "
-            "(59.6%) compared to morning rush hours (40.4%)."
-        )
+        c1, c2 = st.columns(2)
+        with c1:
+            show_chart("season_wise_acc.png")
+            st.info(
+                "Severity stays almost flat across all seasons — "
+                "no single season is more dangerous."
+            )
+        with c2:
+            show_chart("weekdays_acc.png")
+            st.info(
+                "Weekday evening rush hours see significantly more accidents "
+                "(59.6%) compared to morning rush hours (40.4%)."
+            )
 
     with tab4:
-        st.image(chart("severity_pedestrian.png"), use_container_width=True)
-        st.warning("Insight: Pedestrian involved = 33.6% KSI vs 22.8% without")
+        show_chart("severity_pedestrian.png")
+        st.warning("Pedestrian involved = 33.6% KSI vs 22.8% without.")
 
     with tab5:
-        st.image(chart("severity_deprived.png"), use_container_width=True)
+        show_chart("severity_deprived.png")
         st.info(
-            "Insight: KSI share is nearly flat across deprivation bands "
-            "(23.0% -> 25.4%) — IMD shows no strong effect on severity."
+            "KSI share is nearly flat across deprivation bands (23.0% → 25.4%) — "
+            "IMD shows no strong effect on severity."
         )
 
     with tab6:
-        st.markdown(
+        st.write(
             "KSI rate by 1 km grid — darker red = higher share of "
             "killed/seriously-injured accidents (grids with ≥50 accidents)."
         )
-
         try:
             hot = load_grid()
             fig = px.scatter_map(
@@ -224,58 +253,61 @@ elif st.session_state.page == "eda":
             fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
             st.plotly_chart(fig, use_container_width=True)
         except Exception as e:
-            st.error(f"Map is not loaded! {e}")
-            st.image(chart("map_plot.png"), use_container_width=True)
+            st.error(f"Map is not loaded: {e}")
+            show_chart("map_plot.png")
 
-    st.divider()
-    st.caption("Charts: eda.ipynb | Gravite")
-
-# Predict ----------------------------------------------------------
-elif st.session_state.page == "predict":
-    if st.button("← Back"):
-        go("home")
-
-    st.title("KSI vs Slight")
-    st.caption("Predict accident severity by Gravite")
+# ==================================================================
+# TAB 2: PREDICT SEVERITY (GRAVITE)
+# ==================================================================
+with main_predict:
+    st.subheader("Predict Accident Severity using Gravite")
+    st.caption("Adjust the accident parameters below to estimate KSI (Killed or Seriously Injured) risk.")
 
     with st.form("predict_form"):
-        a, b = st.columns(2)
+        a, b = st.columns(2, gap="large")
 
         with a:
-            st.subheader("Numbers")
-            speed_limit = st.selectbox("Speed Limit (mph)", [20, 30, 40, 50, 60, 70], index=2)
-            n_vehicles = st.number_input("Number of Vehicles", 1, 30, 1)
-            min_age = st.number_input("Min driver age", 16, 100, 28)
-            max_age = st.number_input("Max driver age", 16, 100, 32)
-            engine_cc = st.number_input("Max engine CC", 0, 15000, 1200, step=50)
-            male_share = st.slider("Male driver share", 0.0, 1.0, 0.1)
-            imd = st.slider("Avg casualty IMD (1=most deprived)", 1.0, 10.0, 5.0, 0.5)
+            with st.container(border=True):
+                st.markdown("**Vehicle & Driver Numbers**")
+                n1, n2 = st.columns(2)
+                with n1:
+                    speed_limit = st.selectbox("Speed Limit (mph)", [20, 30, 40, 50, 60, 70], index=2)
+                    min_age = st.number_input("Min driver age", 16, 100, 28)
+                    engine_cc = st.number_input("Max engine CC", 0, 15000, 1200, step=50)
+                with n2:
+                    n_vehicles = st.number_input("Number of Vehicles", 1, 30, 1)
+                    max_age = st.number_input("Max driver age", 16, 100, 32)
+                    male_share = st.slider("Male driver share", 0.0, 1.0, 0.1)
 
-            st.subheader("Road users involved")
-            cc = st.columns(2)
-            has_cycle = cc[0].checkbox("Cycle")
-            has_motorcycle = cc[1].checkbox("Motorcycle")
-            has_goods = cc[0].checkbox("Goods vehicle")
-            has_bus = cc[1].checkbox("Bus")
-            has_vul_veh = cc[0].checkbox("Vulnerable vehicle")
-            has_vul_cas = cc[1].checkbox("Vulnerable casualty")
-            has_turn = cc[0].checkbox("Turning")
-            has_escoot = cc[1].checkbox("E-scooter casualty")
-            has_overt = cc[0].checkbox("Overtaking")
-            has_peds = cc[1].checkbox("Pedestrian")
+                imd = st.slider("Avg casualty IMD (1 = most deprived)", 1.0, 10.0, 5.0, 0.5)
+
+            with st.container(border=True):
+                st.markdown("**Road Users Involved**")
+                cc = st.columns(2)
+                has_cycle = cc[0].checkbox("Cycle")
+                has_motorcycle = cc[1].checkbox("Motorcycle")
+                has_goods = cc[0].checkbox("Goods vehicle")
+                has_bus = cc[1].checkbox("Bus")
+                has_vul_veh = cc[0].checkbox("Vulnerable vehicle")
+                has_vul_cas = cc[1].checkbox("Vulnerable casualty")
+                has_turn = cc[0].checkbox("Turning")
+                has_escoot = cc[1].checkbox("E-scooter casualty")
+                has_overt = cc[0].checkbox("Overtaking")
+                has_peds = cc[1].checkbox("Pedestrian")
 
         with b:
-            st.subheader("Conditions")
-            area = st.selectbox("Area", list(AREA))
-            road = st.selectbox("Road type", list(ROAD_TYPE))
-            light = st.selectbox("Light conditions", list(LIGHT))
-            weather = st.selectbox("Weather", list(WEATHER))
-            surface = st.selectbox("Road surface", list(SURFACE))
-            junction = st.selectbox("Junction detail", list(JUNCTION))
-            control = st.selectbox("Junction control", list(CONTROL))
-            day = st.selectbox("Day of week", list(DAY))
+            with st.container(border=True):
+                st.markdown("**Road & Weather Conditions**")
+                area = st.selectbox("Area", list(AREA))
+                road = st.selectbox("Road type", list(ROAD_TYPE))
+                light = st.selectbox("Light conditions", list(LIGHT))
+                weather = st.selectbox("Weather", list(WEATHER))
+                surface = st.selectbox("Road surface", list(SURFACE))
+                junction = st.selectbox("Junction detail", list(JUNCTION))
+                control = st.selectbox("Junction control", list(CONTROL))
+                day = st.selectbox("Day of week", list(DAY))
 
-        submitted = st.form_submit_button("Predict", use_container_width=True, type="primary")
+        submitted = st.form_submit_button("Predict Severity", use_container_width=True, type="primary")
 
     if submitted:
         if min_age > max_age:
@@ -313,37 +345,48 @@ elif st.session_state.page == "predict":
             proba = float(np.clip(model.predict_proba(X_new)[0, 1], 0.0, 1.0))
             pred = int(proba >= THRESHOLD)
 
-            st.progress(proba, text=f"KSI (Killed or Seriously Injured) probability: {proba * 100:.1f}%")
-            if pred == 1:
-                st.error("🚨 KSI (Killed or Seriously Injured)")
-            else:
-                st.success("✅ Slight injuries")
-            st.caption("Predictions may be inaccurate for now.")
+            with st.container(border=True):
+                r1, r2 = st.columns([3, 1])
+                with r1:
+                    st.progress(proba, text=f"KSI Probability: {proba * 100:.1f}%")
+                    if pred == 1:
+                        st.error("🚨 Prediction: KSI (Killed or Seriously Injured)")
+                    else:
+                        st.success("✅ Prediction: Slight injuries")
+                with r2:
+                    st.metric("KSI Risk", f"{proba * 100:.1f}%", delta=f"Threshold {THRESHOLD * 100:.0f}%")
 
-# Model Details ----------------------------------------------------
-elif st.session_state.page == "model_detail":
-    if st.button("← Back"):
-        go("home")
+            st.caption("Disclaimer: Predictions are statistical estimates and may be inaccurate.")
 
-    st.title("ML Model Details")
-    st.caption("Gravite — How KSI is predicted by Random Forest")
+# ==================================================================
+# TAB 3: GRAVITE MODEL DETAILS
+# ==================================================================
+with main_model:
+    st.subheader("Gravite — Random Forest Model Details")
 
-    k1, k2, k3, k4 = st.columns(4)
-    k1.metric("KSI Recall", "0.74")
-    k2.metric("KSI F1", "0.464")
-    k3.metric("Threshold", f"{THRESHOLD:.2f}")
-    k4.metric("Test size", "1,02,761")
+    m1, m2, m3, m4 = st.columns(4)
+    with m1:
+        with st.container(border=True):
+            st.metric("KSI Recall", "0.74")
+    with m2:
+        with st.container(border=True):
+            st.metric("KSI F1", "0.464")
+    with m3:
+        with st.container(border=True):
+            st.metric("Threshold", f"{THRESHOLD:.2f}")
+    with m4:
+        with st.container(border=True):
+            st.metric("Test Size", "1,02,761")
 
-    st.divider()
+    st.write("")
+    sub1, sub2, sub3 = st.tabs(["Specs", "Feature Importance", "Pipeline & Journey"])
 
-    tab1, tab2, tab3 = st.tabs(["Specs", "Feature Importance", "Pipeline & Journey"])
-
-    with tab1:
+    with sub1:
         st.markdown(
             """
             | Item | Value |
             |---|---|
-            | Algorithm | Random Forest Classifier |
+            | Model Name | Gravite (Random Forest Classifier) |
             | Trees (`n_estimators`) | 100 |
             | `max_depth` | 15 |
             | `class_weight` | balanced |
@@ -356,7 +399,7 @@ elif st.session_state.page == "model_detail":
             """
         )
 
-    with tab2:
+    with sub2:
         importance = pd.Series(
             {
                 "has_vulnerable": 0.094,
@@ -374,7 +417,7 @@ elif st.session_state.page == "model_detail":
         st.bar_chart(importance, height=400)
         st.caption("Top 10 features — RF impurity-based importance. Vulnerable road users + speed + driver age dominate.")
 
-    with tab3:
+    with sub3:
         st.markdown("**Pipeline**")
         st.code(
             f"""raw inputs (25 features)
@@ -390,10 +433,10 @@ elif st.session_state.page == "model_detail":
         st.markdown("**Training journey (why each step mattered):**")
         st.markdown(
             """
-            - Baseline RF -> KSI recall 0.15 — model almost guessed "slight"
-            - `class_weight='balanced'` -> recall 0.62 (4.2x more serious cases caught)
-            - Threshold sweep (0.45) -> recall 0.74, F1 0.464
-            - Accuracy trap: 65% looks low, but 76% of data is "slight" — a model guessing always slight scores 75.8%! Accuracy was deprioritized for recall/F1 on KSI
+            - Baseline RF → KSI recall 0.15 — model almost guessed "slight"
+            - `class_weight='balanced'` → recall 0.62 (4.2x more serious cases caught)
+            - Threshold sweep (0.45) → recall 0.74, F1 0.464
+            - Accuracy trap: 65% looks low, but 76% of data is "slight" — a model always guessing slight scores 75.8%! Accuracy was deprioritized for recall/F1 on KSI
             - NaN strategy: no imputation — RF handles missing values natively (`junction_control` was 44.6% missing!)
             """
         )
