@@ -27,56 +27,86 @@ st.set_page_config(page_title="Gravite | UK Road Accident Severity", page_icon="
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap');
 
     :root {
-        --ink: #1b2a3a;
-        --muted: #5d6b7a;
-        --line: #dfe5ec;
-        --surface: #f6f8fb;
-        --accent: #0f4c81;
-        --danger: #b42318;
-        --safe: #1a7f4b;
+        --sign: #00468b;
+        --sign-dark: #003469;
+        --marking: #f2c230;
+        --asphalt: #23272e;
+        --muted: #5b6573;
+        --paper: #eceff3;
+        --line: #d3d9e1;
+        --danger: #c0301f;
+        --safe: #1f7a4d;
     }
-    html, body, [class*="css"], .stApp { font-family: 'IBM Plex Sans', sans-serif; }
-    .block-container { max-width: 1100px; padding-top: 2rem; padding-bottom: 3rem; }
-    #MainMenu, footer { visibility: hidden; }
+    html, body, [class*="css"], .stApp { font-family: 'Barlow', sans-serif; }
+    .stApp { background: var(--paper); }
+    .block-container { max-width: 1100px; padding-top: 1.8rem; padding-bottom: 3rem; }
+    #MainMenu, footer, header[data-testid="stHeader"] { visibility: hidden; }
 
-    h1, h2, h3 { color: var(--ink); letter-spacing: -0.01em; }
-    h1 { font-weight: 700; }
+    h1, h2, h3 { color: var(--asphalt); font-family: 'Barlow Condensed', 'Barlow', sans-serif; letter-spacing: 0; }
+    h1 { font-weight: 700; font-size: 2.4rem; }
+    h2, h3 { font-weight: 600; }
 
-    .hero { text-align: center; padding: 2.5rem 0 1.5rem; }
-    .hero h1 { font-size: 2.6rem; margin-bottom: .4rem; }
-    .hero p { color: var(--muted); font-size: 1.1rem; margin: 0; }
+    /* Home: motorway-sign hero */
+    .sign {
+        background: var(--sign); border-radius: 14px; padding: 8px;
+        box-shadow: 0 2px 0 var(--sign-dark);
+    }
+    .sign-inner {
+        border: 3px solid #fff; border-radius: 9px; padding: 2.2rem 2.4rem;
+    }
+    .sign-inner h1 { color: #fff; font-size: 3.6rem; margin: 0; line-height: 1; }
+    .sign-inner p { color: #dbe8f7; font-size: 1.2rem; margin: .6rem 0 0; }
+    .marking {
+        height: 6px; margin: 1.1rem 0 1.8rem;
+        background: repeating-linear-gradient(90deg, var(--marking) 0 46px, transparent 46px 66px);
+    }
 
     .nav-card {
-        border: 1px solid var(--line); border-radius: 10px;
-        padding: 1.2rem 1.3rem .6rem; background: #fff; min-height: 130px;
+        background: #fff; border: 1px solid var(--line); border-left: 6px solid var(--sign);
+        border-radius: 8px; padding: 1.1rem 1.3rem .8rem; min-height: 140px;
     }
-    .nav-card h3 { margin: 0 0 .35rem; font-size: 1.15rem; }
-    .nav-card p { margin: 0; color: var(--muted); font-size: .95rem; }
+    .nav-card h3 { margin: 0 0 .3rem; font-size: 1.5rem; }
+    .nav-card p { margin: 0; color: var(--muted); font-size: 1rem; }
 
+    /* Metrics */
     div[data-testid="stMetric"] {
-        background: var(--surface); border: 1px solid var(--line);
-        border-radius: 10px; padding: .8rem 1rem;
+        background: #fff; border: 1px solid var(--line); border-top: 4px solid var(--sign);
+        border-radius: 8px; padding: .8rem 1rem;
     }
     div[data-testid="stMetricLabel"] { color: var(--muted); }
+    div[data-testid="stMetricValue"] { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; color: var(--asphalt); }
 
-    .stButton > button, .stFormSubmitButton > button {
-        border-radius: 8px; font-weight: 600; border: 1px solid var(--line);
+    /* Tabs */
+    button[data-baseweb="tab"] { font-weight: 600; }
+    div[data-baseweb="tab-highlight"] { background: var(--sign) !important; height: 3px; }
+
+    /* Buttons */
+    .stButton > button {
+        border-radius: 6px; font-weight: 600; background: #fff;
+        border: 1.5px solid var(--sign); color: var(--sign);
     }
+    .stButton > button:hover { background: var(--sign); color: #fff; border-color: var(--sign); }
     .stFormSubmitButton > button {
-        background: var(--accent); color: #fff; border-color: var(--accent);
+        border-radius: 6px; font-weight: 700; font-size: 1.05rem;
+        background: var(--sign); color: #fff; border: 3px solid #fff;
+        outline: 2px solid var(--sign);
     }
-    .stFormSubmitButton > button:hover { background: #0b3a64; color: #fff; }
+    .stFormSubmitButton > button:hover { background: var(--sign-dark); color: #fff; }
 
+    /* Form panel */
+    div[data-testid="stForm"] { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 1.4rem; }
+
+    /* Result */
     .verdict {
-        border-radius: 10px; padding: 1rem 1.3rem; font-weight: 600;
-        font-size: 1.15rem; margin-top: .6rem;
+        border-radius: 8px; padding: 1.1rem 1.4rem; font-weight: 600; font-size: 1.25rem;
+        margin-top: .8rem; background: #fff; border: 1px solid var(--line); border-left-width: 10px;
     }
-    .verdict.ksi { background: #fef3f2; color: var(--danger); border: 1px solid #fecdca; }
-    .verdict.slight { background: #ecfdf3; color: var(--safe); border: 1px solid #abefc6; }
-    .foot { text-align: center; color: var(--muted); font-size: .85rem; }
+    .verdict.ksi { color: var(--danger); border-left-color: var(--danger); }
+    .verdict.slight { color: var(--safe); border-left-color: var(--safe); }
+    .foot { text-align: center; color: var(--muted); font-size: .9rem; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -197,10 +227,11 @@ page = st.session_state.page
 if page == "home":
     st.markdown(
         """
-        <div class="hero">
-            <h1>Gravite</h1>
-            <p>UK road accident severity analysis and prediction</p>
-        </div>
+        <div class="sign"><div class="sign-inner">
+                <h1>Gravite</h1>
+                <p>UK road accident severity analysis and prediction</p>
+            </div></div>
+            <div class="marking"></div>
         """,
         unsafe_allow_html=True,
     )
@@ -461,7 +492,7 @@ elif page == "model_detail":
             importance, orientation="h", height=420,
             labels={"value": "Importance", "index": ""},
         )
-        fig.update_traces(marker_color="#0f4c81")
+        fig.update_traces(marker_color="#00468b")
         fig.update_layout(showlegend=False, margin=dict(l=0, r=10, t=10, b=0))
         st.plotly_chart(fig, use_container_width=True)
         st.caption(
