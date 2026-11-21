@@ -11,7 +11,6 @@ import streamlit as st
 # ------------------------------------------------------------------
 st.set_page_config(
     page_title="Gravite | UK Road Accident Severity",
-    page_icon="🚦",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -212,7 +211,7 @@ def go(page: str):
 
 
 with st.sidebar:
-    st.markdown("## 🚦 Gravite")
+    st.markdown("## Gravite")
     st.caption("UK Road Accident Severity Analysis & ML Prediction")
     st.divider()
 
@@ -233,7 +232,7 @@ if st.session_state.page == "home":
     st.markdown(
         """
         <div class="hero-box">
-            <div class="hero-title">🚦 Gravite</div>
+            <div class="hero-title">Gravite</div>
             <p class="hero-sub">UK Road Accident Severity Analysis &amp; KSI Prediction Platform</p>
         </div>
         """,
