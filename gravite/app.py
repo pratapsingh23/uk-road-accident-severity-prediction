@@ -7,17 +7,17 @@ import plotly.express as px
 import streamlit as st
 
 
-# Page Config and & Paths---------------------------------------------
+# Page Config & Paths --------------------------------------------------
 
 st.set_page_config(
     page_title="UK Road Accident Severity Dashboard",
-    layout='wide'
+    layout="wide",
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-ASSETS_DIR = os.path.join(BASE_DIR, 'assets')
-GRID_PATH = os.path.join(BASE_DIR, 'hot_grid.csv')
-MODEL_PATH = os.path.join(BASE_DIR, 'gravite_hgbc_bundle.joblib')
+ASSETS_DIR = os.path.join(BASE_DIR, "assets")
+GRID_PATH = os.path.join(BASE_DIR, "hot_grid.csv")
+MODEL_PATH = os.path.join(BASE_DIR, "gravite_hgbc_bundle.joblib")
 
 GRID_URL = "https://github.com/pratapsingh23/uk-road-accident-severity-prediction/releases/download/v1.0/hot_grid.csv"
 MODEL_URL = "https://github.com/pratapsingh23/uk-road-accident-severity-prediction/releases/download/v1.0/gravite_hgbc_bundle.joblib"
@@ -26,21 +26,23 @@ MODEL_URL = "https://github.com/pratapsingh23/uk-road-accident-severity-predicti
 def chart(name):
     return os.path.join(ASSETS_DIR, name)
 
-def show_chart(filename):
+
+def show_chart(filename, width=720):
     path = chart(filename)
     if os.path.exists(path):
-        st.image(path, use_container_width=True)
+        st.image(path, width=width)
     else:
-        st.warning(f"CHart not found: {filename}")
+        st.warning(f"Chart not found: {filename}")
 
 
-# Data & model loading---------------------------------------------------
+# Data & Model Loading -------------------------------------------------
 
 @st.cache_data
 def load_grid():
     if not os.path.exists(GRID_PATH):
         urllib.request.urlretrieve(GRID_URL, GRID_PATH)
     return pd.read_csv(GRID_PATH)
+
 
 @st.cache_resource
 def load_bundle():
@@ -50,18 +52,18 @@ def load_bundle():
 
 
 bundle = load_bundle()
-model = bundle['model']
-features = bundle['features']
-cat_dtypes = bundle['cat_dtypes']
-THRESHOLD = bundle.get('threshold', 0.50)
+model = bundle["model"]
+features = bundle["features"]
+cat_dtypes = bundle["cat_dtypes"]
+THRESHOLD = bundle.get("threshold", 0.50)
 
 
-# Label Encoding------------------------------------------------------
+# Label Encoding -------------------------------------------------------
 
 AREA = {
-    'Urban': 1.0, 
-    'Rural': 2.0,
-    'Unknown': np.nan
+    "Urban": 1.0,
+    "Rural": 2.0,
+    "Unknown": np.nan,
 }
 
 ROAD_TYPE = {
@@ -180,13 +182,12 @@ CARRIAGEWAY_HAZARDS = {
 }
 
 
-# Sidebar-----------------------------------
+# Sidebar --------------------------------------------------------------
 
 with st.sidebar:
     st.header("Accident Dashboard")
     st.caption("UK Road Accident Severity Analysis & Prediction")
     st.divider()
-
 
     st.subheader("Dataset Summary")
     st.write("- **Records:** 5,13,801")
@@ -201,7 +202,7 @@ with st.sidebar:
     st.write("- **KSI F1:** 0.48")
 
 
-# Dashboard header & Top KPIs---------------------------
+# Dashboard Header & Top KPIs ------------------------------------------
 
 st.title("UK Road Accident Severity Dashboard")
 st.caption("Exploratory analysis of 5,13,801 UK accidents and KSI prediction powered by the Gravite model.")
@@ -223,14 +224,14 @@ with k4:
 st.write("")
 
 
-# Main Dashboard Tabs------------------------------------------
+# Main Dashboard Tabs --------------------------------------------------
 
 main_eda, main_predict, main_model = st.tabs(
     ["EDA & Hotspots", "Predict Severity (By Gravite)", "Model Details"]
 )
 
 
-# TAB 1: EDA & HOTSPOTS-----------------------------------
+# TAB 1: EDA & HOTSPOTS ------------------------------------------------
 
 with main_eda:
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
@@ -251,13 +252,13 @@ with main_eda:
     with tab3:
         c1, c2 = st.columns(2)
         with c1:
-            show_chart("season_wise_acc.png")
+            show_chart("season_wise_acc.png", width="stretch")
             st.info(
                 "Severity stays almost flat across all seasons — "
                 "no single season is more dangerous."
             )
         with c2:
-            show_chart("weekdays_acc.png")
+            show_chart("weekdays_acc.png", width="stretch")
             st.info(
                 "Weekday evening rush hours see significantly more accidents "
                 "(59.6%) compared to morning rush hours (40.4%)."
@@ -303,12 +304,13 @@ with main_eda:
                 height=600,
             )
             fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
         except Exception as e:
             st.error(f"Map is not loaded: {e}")
             show_chart("map_plot.png")
 
-# TAB 2: PREDICT SEVERITY-------------------------------------------
+
+# TAB 2: PREDICT SEVERITY ----------------------------------------------
 
 with main_predict:
     st.subheader("Predict Accident Severity using Gravite")
@@ -369,7 +371,7 @@ with main_predict:
                 with t2:
                     hour = st.selectbox("Collision hour", list(HOUR), index=14)
 
-        submitted = st.form_submit_button("Predict Severity", use_container_width=True, type="primary")
+        submitted = st.form_submit_button("Predict Severity", width="stretch", type="primary")
 
     if submitted:
         if min_age > max_age:
@@ -408,14 +410,11 @@ with main_predict:
                 "hour": HOUR[hour],
             }
 
-            
             X_new = pd.DataFrame([row])[features].copy()
 
-            
             for col, dtype in cat_dtypes.items():
                 X_new[col] = X_new[col].astype(dtype)
 
-            # 3. Prediction
             proba = float(np.clip(model.predict_proba(X_new)[0, 1], 0.0, 1.0))
             pred = int(proba >= THRESHOLD)
 
@@ -430,9 +429,10 @@ with main_predict:
                 with r2:
                     st.metric("KSI Risk", f"{proba * 100:.1f}%", delta=f"Threshold {THRESHOLD * 100:.0f}%")
 
-            st.caption("Predictions may inaccurate for now.")
+            st.caption("Predictions may be inaccurate for now.")
 
-# TAB 3: GRAVITE MODEL DETAILS-------------------------------
+
+# TAB 3: GRAVITE MODEL DETAILS -----------------------------------------
 
 with main_model:
     st.subheader("Gravite — HistGradientBoostingClassifier Model Details")
@@ -474,7 +474,7 @@ with main_model:
             """
         )
 
-with sub2:
+    with sub2:
         st.markdown("**How Gravite Works (Step-by-Step)**")
         st.markdown(
             f"""
