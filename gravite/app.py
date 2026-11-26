@@ -253,13 +253,13 @@ with main_eda:
         st.warning("The rural fatal rate is 2.8% — 3.5x higher than urban (0.8%).")
 
     with tab3:
-            show_chart("season_wise_acc.png", width="stretch")
+            show_chart("season_wise_acc.png")
             st.info(
                 "Severity stays almost flat across all seasons — "
                 "no single season is more dangerous."
             )
             st.divider()
-            show_chart("weekdays_acc.png", width="stretch")
+            show_chart("weekdays_acc.png")
             st.info(
                 "Weekday evening rush hours see significantly more accidents "
                 "(59.6%) compared to morning rush hours (40.4%)."
