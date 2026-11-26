@@ -13,7 +13,7 @@
 
 ---
 
-## 📌 Overview
+## Overview
 
 | | |
 |---|---|
@@ -24,7 +24,7 @@
 
 ---
 
-## 📊 Dataset
+## Dataset
 
 Publicly available **UK road-accident open data (STATS19)** across three tables:
 
@@ -43,7 +43,7 @@ After cleaning and merging:
 
 ---
 
-## 🔍 Exploratory Data Analysis
+## Exploratory Data Analysis
 
 Key findings from the EDA notebook:
 
@@ -56,7 +56,7 @@ Key findings from the EDA notebook:
 - **Spatial hotspots:** a **1 km-grid KSI-rate map** (interactive Plotly map inside the app) highlights where serious accidents concentrate
 
 <details>
-<summary><b>📊 Chart gallery (click to expand)</b></summary>
+<summary><b> Chart gallery (click to expand)</b></summary>
 
 | Severity distribution | Urban vs rural |
 |---|---|
@@ -76,7 +76,7 @@ Key findings from the EDA notebook:
 
 ---
 
-## 🤖 Model — HistGradientBoostingClassifier
+## Model — HistGradientBoostingClassifier
 
 **Why `HistGradientBoostingClassifier`?** It bins continuous features into histograms for fast training across 5.13 lakh records, handles 11 categorical features natively (`from_dtype`) without high-dimensional One-Hot Encoding, and learns optimal split directions for `NaN` values directly without imputation.
 
@@ -106,7 +106,7 @@ Key findings from the EDA notebook:
 
 ### Model Bundle & Training Script
 
-- **`gravite/train.py`:** Object-oriented (`GraviteProductionTrainer`) script that loads the dataset, enforces the exact 30-feature schema, trains on 100% of records, and exports a compressed bundle.
+- **`gravite/train.py`:** Object-oriented (`GraviteTrainer`) script that loads the dataset, enforces the exact 30-feature schema, trains on 100% of records, and exports a compressed bundle.
 - **Inference Bundle:** Stores the trained pipeline, feature order, exact `CategoricalDtype` schemas, and decision threshold together:
 
 ```python
