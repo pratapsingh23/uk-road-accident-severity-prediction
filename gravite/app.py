@@ -207,7 +207,7 @@ with st.sidebar:
 st.title("UK Road Accident Severity Dashboard")
 st.caption("Exploratory analysis of 5,13,801 UK accidents and KSI prediction powered by the Gravite model.")
 
-k1, k2, k3, k4 = st.columns(4)
+k1, k2, k3, k4, k5 = st.columns(5)
 with k1:
     with st.container(border=True):
         st.metric("Total Accidents", "5,13,801")
@@ -220,6 +220,9 @@ with k3:
 with k4:
     with st.container(border=True):
         st.metric("Fatal Injuries", "1.5%")
+with k5:
+    with st.container(border=True):
+        st.metric("KSI (Fatal + Serious)", "24.2%")
 
 st.write("")
 
