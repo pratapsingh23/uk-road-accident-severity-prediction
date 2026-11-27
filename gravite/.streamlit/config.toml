@@ -2,7 +2,7 @@
 headless = true
 
 [theme]
-base = "light"
+base = "dark"
 primaryColor = "#0D9488"
 backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#F1F5F9"
